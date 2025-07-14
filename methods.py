@@ -35,8 +35,8 @@ def unit_vector_calculation():
     altaz_coordinate = icrs_coordinate.transform_to(AltAz(obstime=observation_time, location=obslocation))
     enu_coordinates = altaz_coordinate.cartesian
     
+def main():
+    unit_vector_calculation()
 
-create_earth_location()
-time_of_observation()
-creating_sky_coordinate()
-unit_vector_calculation()
+if __name__ == "__main__":
+    main()
