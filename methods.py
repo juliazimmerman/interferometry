@@ -20,10 +20,17 @@ def time_of_observation():
 # SkyCoord Method - adjust ra and dec parameters for each csv file
 def creating_sky_coordinate():
     data = np.loadtxt('stars.csv', delimiter=',', usecols=(1,2), skiprows=1)
-    ra = data[0, 0] 
+    ra = data[:, 0]
     dec = data[0, 1]
     coordinate = SkyCoord(ra*u.deg, dec*u.deg, frame='icrs', obstime=Time([2000, 2010], format ='jyear'))
     return coordinate
+
+# Array
+def antenna_positions_array():
+    a = np.zeros(shape=(3,2)) # Change second parameter to number of antennas
+    # Syntax: a[row, column] = value. Defaults to 0 without specified value.
+    a[0, 1] = 10
+    print(a)
 
 # ŝ Unit Vector Calculation
 def unit_vector_calculation():
@@ -31,12 +38,12 @@ def unit_vector_calculation():
     icrs_coordinate = creating_sky_coordinate()
     observation_time = time_of_observation()
     obslocation = create_earth_location()
-    # Transform our SkyCoord to AltAz coordinates
+    # Transform our SkyCoord to AltAz then ENU coordinates
     altaz_coordinate = icrs_coordinate.transform_to(AltAz(obstime=observation_time, location=obslocation))
     enu_coordinates = altaz_coordinate.cartesian
     
 def main():
-    unit_vector_calculation()
+    antenna_positions_array()
 
 if __name__ == "__main__":
     main()
