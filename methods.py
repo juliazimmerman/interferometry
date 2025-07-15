@@ -13,19 +13,18 @@ def create_earth_location():
 
 # Time Method
 def time_of_observation():
-    times = ['2025-07-11T14:33:00']
-    observation_time = Time(times)
-    return observation_time
+    base_time = Time('2025-07-11T00:00:00')
+    set_of_times = np.linspace(-2, 2, 4) * u.hour # Collecting 4 time values from 10pm - 2am
+    observation_times = base_time + set_of_times
+    print(observation_times)
+    return observation_times
 
 # SkyCoord Method - adjust ra and dec parameters for each csv file
 def creating_sky_coordinate():
     data = np.loadtxt('stars.csv', delimiter=',', usecols=(1,2), skiprows=1)
     ra = data[:, 0]
     dec = data[0, 1]
-    coordinate = SkyCoord(ra*u.deg, dec*u.deg, frame='icrs', obstime=Time([2000, 2010], format ='jyear'))
-    return coordinate
-
-# Array
+    coordinate = SkyCoord(ra*u.deg, dec*u.deg, frame='icrs')
 def antenna_positions_array():
     a = np.zeros(shape=(3,2)) # Change second parameter to number of antennas
     # Syntax: a[row, column] = value. Defaults to 0 without specified value.
@@ -44,6 +43,6 @@ def unit_vector_calculation():
     
 def main():
     antenna_positions_array()
-
+    time_of_observation()
 if __name__ == "__main__":
     main()
