@@ -14,7 +14,7 @@ def set_start_time(time):
     return Time(time)
 
 # Method for creating multiple times - use to create multipe time objects for a time array
-# base_time = starting time, x = starting value, y = ending value, z = number of points to generate
+# base_time = starting time, x = starting value(string), y = ending value(integer), z = number of points to generate (integer)
 def multiple_times(base_time, y, z):
     time_array = Time(base_time) + np.linspace(0, y, z) * u.hour
     for i in range(len(time_array)):
@@ -34,54 +34,24 @@ def antenna_positions_array(num_of_antennas, positions_list):
     return positions_array
 
 # Calculate the baseline vector
-def base_line_vector(obsetime=obstime, obsloc=obsloc):
-    antenna_array = antenna_positions_array()
-    antenna_1 = antenna_array[:, 0]
-    antenna_2 = antenna_array[:, 1]
+def base_line_vector():
+    antenna_array = antenna_positions_array(2, [(50, 0, 0), (0, 100, 0)])
+    antenna_1 = antenna_array[0]
+    antenna_2 = antenna_array[1]
     b = antenna_2 - antenna_1
     return b
 
 # ŝ Unit Vector Calculation
 def unit_vector_calculation():
     # Take variables from previous functions
-    icrs_coordinate = creating_sky_coordinate() # Point on sky
-    observation_time = time_of_observation() # Observation Time
-    obslocation = create_earth_location() # Observation Location
+    icrs_coordinate = creating_sky_coordinate(128, -32.1) # Point on sky
+    observation_time = multiple_times('2025-07-18 13:00:00', 6, 10) # Observation Time
+    obslocation = create_earth_location(121, 33) # Observation Location
     # Transform our SkyCoord to AltAz then ENU coordinates
     altaz_coordinate = icrs_coordinate.transform_to(AltAz(obstime=observation_time, location=obslocation))
-    enu_coordinates = altaz_coordinate.cartesian    
-    return enu_coordinates)
+    enu_coordinates = altaz_coordinate.cartesian.xyz.value.T
+    return enu_coordinates
 
 
 
-def main():
-    antenna_positions_array()
-    unit_vector_calculation()
-    base_line_vector()
-    check_enucoord_values()
-    
-if __name__ == "__main__":
-    main()
 
-
-start_time = 12345
-end_time = 23456
-time_step = 1 * u.hour
-num_times = 10
-
-time_array = np.linspace(start_time, end_time, num_times)
-
-# List comprehension: time_array = [Time(time) for time in time_array]
-
-for i in range(len(time_array)):
-    time_array[i] = Time(time_array[i])
-
-# Or use this methods
-    
-for i, time in enumerate(time_array):
-    time_array[i] = Time(time)
-    # start time, number of time, resolution, end time
-
-    # calcualte
-
-def run_sim()
