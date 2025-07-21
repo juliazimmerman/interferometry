@@ -22,8 +22,10 @@ def multiple_times(base_time, duration, num_of_times):
     return time_array
 
 # instantiate point on sky - input arrays like: creating_sky_coordinate([value1, value2], [value1, value2])
-def creating_sky_coordinate(ra, dec):
-    coordinate = SkyCoord(ra*u.deg, dec*u.deg, frame='icrs')
+
+def creating_sky_coordinate(sources):
+    ra, dec = sources
+    coordinate = SkyCoord(ra * u.deg, dec * u.deg, frame='icrs')
     return coordinate
 
 # An array to store positions of antennas
@@ -34,15 +36,18 @@ def antenna_positions_array(num_of_antennas, positions_list):
     return positions_array
 
 # Calculate the baseline vector
-def base_line_vector(antenna1, antenna2):
-    b = antenna2 - antenna1
+def base_line_vector(positions_list):
+    antenna1 = np.array(positions_list[1])
+    antenna2 = np.array(positions_list[0])
+    b = antenna1 - antenna2
     return b
 
 # ŝ Unit Vector Calculation
 # sources is a singular set of ra, dec values like this: (ra, dec)
 def unit_vector_calculation(sources, base_time, duration, num_of_times, lon, lat):
     # Take variables from previous functions
-    icrs_coordinate = creating_sky_coordinate(ra, dec)
+    ra, dec = sources
+    icrs_coordinate = creating_sky_coordinate(sources)
     observation_time = multiple_times(base_time, duration, num_of_times)
     obslocation = create_earth_location(lon, lat)
     # Transform our SkyCoord to AltAz then ENU coordinates
