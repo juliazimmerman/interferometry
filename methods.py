@@ -9,9 +9,6 @@ def create_earth_location(lon, lat):
     location = EarthLocation.from_geodetic(lon, lat)
     return location
 
-a = create_earth_location(133, 29)
-print(a)
-
 # Method for creating a single time - use to create only one time object
 def set_start_time(time):
     return Time(time)
