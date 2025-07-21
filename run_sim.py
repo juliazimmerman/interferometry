@@ -34,31 +34,33 @@ def base_line_array(num_of_antennas, positions_list):
     return baseline_array
 
 # Source Array Construction
-def source_array(ra, dec):
-    list_of_coordinates = creating_sky_coordinate(ra, dec)
+def source_array(sources):
+    list_of_coordinates = []
+    for ra, dec in sources:
+        coord = creating_sky_coordinate((ra, dec))
+        list_of_coordinates.append(coord)
     coordinate_array = np.array(list_of_coordinates)
     return coordinate_array
 
-
-# sources is a list of ra and dec pairs,like this: (ra, dec)
-def compute_visibility(amplitude, freqs, num_of_antennas, positions_list, sources, base_time, duration, num_of_times, lon, lat):
-    visibility = 0
-    for ra, dec in sources:
-        visibility += compute_single_visibility(amplitude, freqs, num_of_antennas, positions_list, ra, dec, base_time, duration, num_of_times, lon, lat)
-
+# Calculate Visibility
+# make the core method (this one) only take a SINGLE baseline, frequency, time, source and return a singular value
+def compute_single_visibility(amplitude, freqs, num_of_antennas, positions_list, sources, base_time, duration, num_of_times, lon, lat):
+    amplitude_squared = amplitude ** 2
+    complex_exponential = np.exp(2j * np.pi)
+    speed_of_light = c
+    v_n = np.array(freqs)
+    baseline_vector = base_line_vector(positions_list)
+    unit_vector = unit_vector_calculation(sources, base_time, duration, num_of_times, lon, lat)
+    dot_product = np.dot(baseline_vector, unit_vector)
+    visibility = amplitude_squared * (complex_exponential ** (v_n * (dot_product / speed_of_light)))
     return visibility
 
 
-# Calculate Visibility
-def compute_visibility(amplitude, freqs, num_of_antennas, positions_list, ra, dec, base_time, y, z, lon, lat):
-    amplitude_squared = amplitude ** 2
-    complex_exponential = np.exp(2 * np.pi * 1j)
-    speed_of_light = c
-    v_n = freq_array(freqs)
-    baseline_vector = base_line_array(num_of_antennas, positions_list)
-    unit_vector = unit_vector_calculation(ra, dec, base_time, y, z, lon, lat)
-    dot_product = np.dot(baseline_vector, unit_vector)
-    visibility = amplitude_squared * (complex_exponential ** (v_n * (dot_product / speed_of_light)))
+# sources is a tuple of ra and dec pairs,like this: [(ra1, dec1), (ra2, dec2)...]
+def compute_visibility(amplitude, freqs, num_of_antennas, positions_list, sources, base_time, duration, num_of_times, lon, lat):
+    visibility = 0
+    for ra, dec in sources:
+        visibility += compute_single_visibility(amplitude, freqs, num_of_antennas, positions_list, (ra, dec), base_time, duration, num_of_times, lon, lat)
     return visibility
 
 
