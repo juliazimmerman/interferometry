@@ -39,7 +39,8 @@ def base_line_vector(antenna1, antenna2):
     return b
 
 # ŝ Unit Vector Calculation
-def unit_vector_calculation(ra, dec, base_time, duration, num_of_times, lon, lat):
+# sources is a singular set of ra, dec values like this: (ra, dec)
+def unit_vector_calculation(sources, base_time, duration, num_of_times, lon, lat):
     # Take variables from previous functions
     icrs_coordinate = creating_sky_coordinate(ra, dec)
     observation_time = multiple_times(base_time, duration, num_of_times)
