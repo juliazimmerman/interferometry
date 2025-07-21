@@ -39,6 +39,16 @@ def source_array(ra, dec):
     coordinate_array = np.array(list_of_coordinates)
     return coordinate_array
 
+
+# sources is a list of ra and dec pairs,like this: (ra, dec)
+def compute_visibility(amplitude, freqs, num_of_antennas, positions_list, sources, base_time, duration, num_of_times, lon, lat):
+    visibility = 0
+    for ra, dec in sources:
+        visibility += compute_single_visibility(amplitude, freqs, num_of_antennas, positions_list, ra, dec, base_time, duration, num_of_times, lon, lat)
+
+    return visibility
+
+
 # Calculate Visibility
 def compute_visibility(amplitude, freqs, num_of_antennas, positions_list, ra, dec, base_time, y, z, lon, lat):
     amplitude_squared = amplitude ** 2
