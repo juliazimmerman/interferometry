@@ -25,11 +25,7 @@ def base_line_array(num_of_antennas, positions_list):
     antenna_pairs = []
     for i in range(len(antenna_array)):
         for j in range(i, len(antenna_array)):
-            if j != i:
-                antenna_pairs.append((i, j))
-            else:
-                exit
-    pair = antenna_pairs[0]
+            antenna_pairs.append((i,j))
     baseline_list = []
     for pair in antenna_pairs:
         baseline = antenna_array[pair[1]] - antenna_array[pair[0]]
