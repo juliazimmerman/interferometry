@@ -30,8 +30,12 @@ def base_line_array(num_of_antennas, positions_list):
             else:
                 exit
     pair = antenna_pairs[0]
-    baseline = antenna_array[pair[1]] - antenna_array[pair[0]]    
-    return baseline
+    baseline_list = []
+    for pair in antenna_pairs:
+        baseline = antenna_array[pair[1]] - antenna_array[pair[0]]
+        baseline_list.append(baseline)
+    baseline_array = np.array(baseline_list)
+    return baseline_array
 
 # Source Array Construction
 def source_array(ra, dec):
