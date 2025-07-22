@@ -29,8 +29,8 @@ def creating_sky_coordinate(sources):
     return coordinate
 
 # An array to store positions of antennas
-def antenna_positions_array(num_of_antennas, positions_list):
-    positions_array = np.zeros(shape=(num_of_antennas,3))
+def antenna_positions_array(positions_list):
+    positions_array = np.zeros(shape=(len(positions_list) ,3))
     for index, item in enumerate(positions_list):
         positions_array[index, :] = item
     return positions_array
