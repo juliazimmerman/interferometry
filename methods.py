@@ -44,11 +44,10 @@ def base_line_vector(positions_list):
 
 # ŝ Unit Vector Calculation
 # sources is a singular set of ra, dec values like this: (ra, dec)
-def unit_vector_calculation(sources, base_time, duration, num_of_times, lon, lat):
+def unit_vector_calculation(sources, observation_time, lon, lat):
     # Take variables from previous functions
     ra, dec = sources
     icrs_coordinate = creating_sky_coordinate(sources)
-    observation_time = multiple_times(base_time, duration, num_of_times)
     obslocation = create_earth_location(lon, lat)
     # Transform our SkyCoord to AltAz then ENU coordinates
     altaz_coordinate = icrs_coordinate.transform_to(AltAz(obstime=observation_time, location=obslocation))
