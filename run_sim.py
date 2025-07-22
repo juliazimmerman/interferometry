@@ -40,50 +40,41 @@ def source_array(sources):
 
 # Calculate Visibility
 # make the core method (this one) only take a SINGLE baseline, frequency, time, source and return a singular value
-def compute_single_visibility(amplitude, freqs, positions_list, sources, time_info, location_info):
+def compute_single_visibility(amplitude, obs_freq, positions_list, source, obs_time, location_info):
     # Unpack paramter groups
-    base_time, duration, num_of_times = time_info
     lon, lat = location_info
 
     # Math here
     amplitude_squared = amplitude ** 2
-    complex_exponential = np.exp(2j * np.pi)
     speed_of_light = c
-    v_n = np.array(freqs)
+    v_n = obs_freq
     baseline_vector = base_line_vector(positions_list)
-    unit_vector = unit_vector_calculation(sources, time_info, location_info)
+    unit_vector = unit_vector_calculation(source, obs_time, lon, lat)
+
     dot_product = np.dot(baseline_vector, unit_vector)
-    visibility = amplitude_squared * (complex_exponential ** (v_n * (dot_product / speed_of_light)))
-    return visibility
+    geometric_time_delay = dot_product / speed_of_light
 
+    visibility = amplitude_squared * np.exp(2j * np.pi * v_n * geometric_time_delay)
 
-# sources is a tuple of ra and dec pairs,like this: [(ra1, dec1), (ra2, dec2)...]
-def compute_visibility(amplitude, freqs, positions_list, sources, time_info, location_info):
-    # Unpack parameter groups
-    base_time, duration, num_of_times = time_info
-    lon, lat = location_info
-
-    # sum of visibilities here
-    visibility = 0
-    for ra, dec in sources:
-        visibility += compute_single_visibility(amplitude, freqs, num_of_antennas, positions_list, (ra, dec), base_time, duration, num_of_times, lon, lat)
     return visibility
 
 def main(amplitude, time_info, freqs, position_list, sources, location_info):
-    
     # Creating Time Array
     # base_time, duration, num_of_times = time_info
     # input like this: main(...('2023-01-01 00:00:00', 6, 10)...)
 
     time_list = time_array(time_info)
+    print(f"Time list: {time_list}")
 
     # Creating Frequency List
     # create an array of frequencies, like this: main(...[100e6, 150e6, ...]...)
     freq_list = freqs
+    print(f"Freq list: {freq_list}")
 
     # Creating Baseline Array
     # using a list of positions, input list like this: main(... [(x, y, z), (a, b, c)]...)
     baseline_array = base_line_array(position_list)
+    print(f"Baseline array: {baseline_array}")
 
     num_baselines = len(baseline_array)
     num_freqs = len(freq_list)
@@ -96,13 +87,14 @@ def main(amplitude, time_info, freqs, position_list, sources, location_info):
             for k, time in enumerate(time_list):
                 visibility = 0
                 for ra, dec in sources:
-                    visibility += compute_single_visibility(amplitude, freq, baseline, time, (ra, dec), location_info)
+                    visibility += compute_single_visibility(amplitude, freq, baseline, (ra, dec), time, location_info)
                 output_array[i, j, k] = visibility
-                    
-    return output_array[i, j, k]
 
-r = main(1, [(0, 0, 0), (100, 0, 0)], [(180, 45)], ("2023-01-01 00:00:00", 2, 3), [100e6, 150e6], (-111.6, 35.2))
-print(r)
+    print(output_array.shape)
 
+    return output_array
 
 
+if __name__ == "__main__":
+    r = main(1, ("2023-01-01 00:00:00", 2, 3), [100e6, 150e6], [(0, 0, 0), (100, 0, 0)], [(180, 45)], (-111.6, 35.2))
+    print(r)
