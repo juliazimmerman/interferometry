@@ -9,10 +9,6 @@ def create_earth_location(lon, lat):
     location = EarthLocation.from_geodetic(lon, lat)
     return location
 
-# Method for creating a single time - use to create only one time object
-def set_start_time(time):
-    return Time(time)
-
 # Method for creating multiple times - use to create multipe time objects for a time array
 # base_time = starting time, x = starting value(string), y = ending value(integer), z = number of points to generate (integer)
 def multiple_times(base_time, duration, num_of_times):
