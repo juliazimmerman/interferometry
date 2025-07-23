@@ -10,7 +10,7 @@ from methods import multiple_times, antenna_positions_array, base_line_vector, c
 
 # Time Array Construction
 def time_array(time_info):
-    base_time, duration, num_of_times = time_info # base_time is string of starting time, y is integer for the duration of data, z is inter of number of data points
+    base_time, duration, num_of_times = time_info
     time_samples = multiple_times(base_time, duration, num_of_times)
     return time_samples
 
@@ -90,11 +90,34 @@ def main(amplitude, time_info, freqs, position_list, sources, location_info):
                     visibility += compute_single_visibility(amplitude, freq, baseline, (ra, dec), time, location_info)
                 output_array[i, j, k] = visibility
 
-    print(output_array.shape)
+    # Reshaping the real and imaginary components of the array
+    real = output_array.real.reshape(-1)
+    imaginary = output_array.imag.reshape(-1)
 
+    # Stack the real and imaginary components side by side
+    combined_outputs = np.column_stack((real, imaginary))
+
+    # Save it as a file - each row is 1 visibility, first column is real second column is imaginary.
+    np.savetxt("blossom.txt", combined_outputs)
+                
+    print(f"Output Array: {output_array.shape}")
+    print("Each: Row = Frequency, Column = Time, Block = Baseline")
+
+    # Flatten list of tuples
+    positions_flattened = np.ravel(position_list)
+    sources_flattened = np.ravel(sources)
+
+    # Create Python list of all inputs
+    combined_inputs = [amplitude] + list(time_info) + list(freqs) + list(positions_flattened) + list(sources_flattened) + list(location_info)
+
+    # Save into file.
+    np.savetxt("flower.txt", combined_inputs, fmt='%s')
+
+    # The resulting visibility is complex: it stores information on both amplitude and frequency.
     return output_array
 
 
+
+
 if __name__ == "__main__":
-    r = main(1, ("2023-01-01 00:00:00", 2, 3), [100e6, 150e6], [(0, 0, 0), (100, 0, 0)], [(180, 45)], (-111.6, 35.2))
-    print(r)
+    
