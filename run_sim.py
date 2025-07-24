@@ -98,7 +98,7 @@ def main(amplitude, time_info, freqs, position_list, sources, location_info):
     combined_outputs = np.column_stack((real, imaginary))
 
     # Save it as a file - each row is 1 visibility, first column is real second column is imaginary.
-    np.savetxt("blossom.txt", combined_outputs)
+    #np.savetxt("first_graph_outputs.txt", combined_outputs)
                 
     print(f"Output Array: {output_array.shape}")
     print("Each: Row = Frequency, Column = Time, Block = Baseline")
@@ -111,13 +111,18 @@ def main(amplitude, time_info, freqs, position_list, sources, location_info):
     combined_inputs = [amplitude] + list(time_info) + list(freqs) + list(positions_flattened) + list(sources_flattened) + list(location_info)
 
     # Save into file.
-    np.savetxt("flower.txt", combined_inputs, fmt='%s')
+    #np.savetxt("first_graph_inputs.txt", combined_inputs, fmt='%s')
 
     # The resulting visibility is complex: it stores information on both amplitude and frequency.
+
+    phases = np.angle(visibility)
+   
     return output_array
 
 
 
-
 if __name__ == "__main__":
+
+    
+
     
