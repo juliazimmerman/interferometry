@@ -11,12 +11,12 @@ git clone git@github.com:juliazimmerman/interferometry.git
 ## Installation
 It's recommended to install astropy in a virtual environment. To do so:
 ```
-python3 -m environment_name.venv
+python3 -m venv myenv
 ```
 
 To activate the virtual environment (may need to include additional subdirectories depending on where your virtual environment is saved):
 ```
-source environment_name/bin/activate
+source myenv/bin/activate
 ```
 Then, install the packages:
 
