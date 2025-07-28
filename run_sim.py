@@ -120,8 +120,9 @@ def main(amplitude, time_info, freqs, position_list, sources, location_info):
     return output_array
 
 
-
 if __name__ == "__main__":
+    sample_visibility = main(1, ("2025-01-01 00:00:00", 5, 10), [100e6, 150e6], [(0, 0, 0), (50, 0, 0)], [(180, 45), (270, 5)], (-118, 34))
+    print(sample_visibility)
 
     
 
