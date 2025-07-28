@@ -29,7 +29,7 @@ pip install numpy, astropy
 The simulation currently has a sample set of data to return a visibility. The data is as follows in the details panel:
 
 <details>
-<summary>**Example Data Set as in Program (Click to Expand)**</summary>
+<summary>Example Data Set as in Program (Click to Expand)</summary>
 
 The visibility returned by the program is based on the following example input data:
 
@@ -50,6 +50,7 @@ python3 run_sim.py
 ```
 
 Understanding the output:
+
 This will output a list of your 10 time values evenly spaced across 5 hours starting from midnight of January 1st, 2025, your list of frequencies of 100 MHz and 150 MHz, and your calculated baseline array of the two anntenas. It also prints the dimensions of the output array, which in this case is (1, 2, 10) meaning there is 1 baseline, 2 frequencies, and 10 time values. There is a printed message saying, "Each: Row = Frequency, Column = Time, Block = Baseline" to help understand the formatting of the outputed array. Then, the program outputs your visibilities as an array.
 
 Running the simulation also saves two files to your computer, "sample_visibility_inputs.txt" and "sample_visibility_outputs.txt". Both files are a log of the input and output values you inputed and received, allowing you to refer to them in the future. 
