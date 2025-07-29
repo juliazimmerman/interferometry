@@ -6,7 +6,7 @@ import numpy as np
 from scipy.constants import c
 
 # Methods from methods.py
-from methods import multiple_times, antenna_positions_array, base_line_vector, creating_sky_coordinate, unit_vector_calculation
+from methods import multiple_times, antenna_positions_array, creating_sky_coordinate, unit_vector_calculation
 
 # Time Array Construction
 def time_array(time_info):
@@ -40,7 +40,10 @@ def source_array(sources):
 
 # Calculate Visibility
 # make the core method (this one) only take a SINGLE baseline, frequency, time, source and return a singular value
-def compute_single_visibility(amplitude, obs_freq, positions_list, source, obs_time, location_info):
+def compute_single_visibility(amplitude, obs_freq, baseline_vec, source, obs_time, location_info, unit_vector):
+    if type(unit_vector) == str:
+        return 0+0j
+
     # Unpack paramter groups
     lon, lat = location_info
 
@@ -48,10 +51,8 @@ def compute_single_visibility(amplitude, obs_freq, positions_list, source, obs_t
     amplitude_squared = amplitude ** 2
     speed_of_light = c
     v_n = obs_freq
-    baseline_vector = base_line_vector(positions_list)
-    unit_vector = unit_vector_calculation(source, obs_time, lon, lat)
 
-    dot_product = np.dot(baseline_vector, unit_vector)
+    dot_product = np.dot(baseline_vec, unit_vector[[1,0,2]])
     geometric_time_delay = dot_product / speed_of_light
 
     visibility = amplitude_squared * np.exp(2j * np.pi * v_n * geometric_time_delay)
@@ -83,47 +84,31 @@ def main(amplitude, time_info, freqs, position_list, sources, location_info):
     output_array = np.zeros(shape=(num_baselines, num_freqs, num_times), dtype = complex)
 
     for i, baseline in enumerate(baseline_array):
-        for j, freq in enumerate(freq_list):
-            for k, time in enumerate(time_list):
+        #print(f"baseline {baseline}")
+        for k, time in enumerate(time_list):
+            unit_vectors = [unit_vector_calculation(source, time, location_info) for source in sources]
+            #print(f"unit: {unit_vectors}")
+            for j, freq in enumerate(freq_list):
+                print(i,j,k)
                 visibility = 0
-                for ra, dec in sources:
-                    visibility += compute_single_visibility(amplitude, freq, baseline, (ra, dec), time, location_info)
+                for l, source in enumerate(sources):
+                    visibility += compute_single_visibility(amplitude, freq, baseline, (source[0], source[1]), time, location_info, unit_vectors[l])
                 output_array[i, j, k] = visibility
-
-    # Reshaping the real and imaginary components of the array
-    real = output_array.real.reshape(-1)
-    imaginary = output_array.imag.reshape(-1)
-
-    # Stack the real and imaginary components side by side
-    combined_outputs = np.column_stack((real, imaginary))
-
-    # Save it as a file - each row is 1 visibility, first column is real second column is imaginary.
-    #np.savetxt("sample_visibility_outputs.txt", combined_outputs)
-                
-    print(f"Output Array: {output_array.shape}")
-    print("Each: Row = Frequency, Column = Time, Block = Baseline")
-
-    # Flatten list of tuples
-    positions_flattened = np.ravel(position_list)
-    sources_flattened = np.ravel(sources)
-
-    # Create Python list of all inputs
-    combined_inputs = [amplitude] + list(time_info) + list(freqs) + list(positions_flattened) + list(sources_flattened) + list(location_info)
-
-    # Save into file.
-    #np.savetxt("sample_visibility_inputs.txt", combined_inputs, fmt='%s')
-
-    # The resulting visibility is complex: it stores information on both amplitude and frequency.
-
-    phases = np.angle(visibility)
-   
+ 
     return output_array
 
 
-if __name__ == "__main__":
-    sample_visibility = main(1, ("2025-01-01 00:00:00", 5, 10), [100e6, 150e6], [(0, 0, 0), (50, 0, 0)], [(180, 45), (270, 5)], (-118, 34))
-    print(sample_visibility)
 
-    
+if __name__ == "__main__": 
+    print("Running Main:")
+    amplitude = 1
+    freq_array = np.asarray([i*1e5 for i in range(0,100000)])
+    time = ("2023-01-01 00:00:00", 1, 1)
+    ants = np.asarray([(0,0,0), (100,0,0)])
+    ant_loc = (-50.6, 0)
+    sources = np.asarray([[lon, 0] for lon in np.linspace(-180, 165, 24)])
 
-    
+    r = main(amplitude, time, freq_array, ants, sources, ant_loc)
+
+    np.save("data_output.npy", r)
+
