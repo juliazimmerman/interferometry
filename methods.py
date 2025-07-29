@@ -19,8 +19,8 @@ def multiple_times(base_time, duration, num_of_times):
 
 # instantiate point on sky - input arrays like: creating_sky_coordinate([value1, value2], [value1, value2])
 
-def creating_sky_coordinate(sources):
-    ra, dec = sources
+def creating_sky_coordinate(source):
+    ra, dec = source
     coordinate = SkyCoord(ra * u.deg, dec * u.deg, frame='icrs')
     return coordinate
 
@@ -31,23 +31,21 @@ def antenna_positions_array(positions_list):
         positions_array[index, :] = item
     return positions_array
 
-# Calculate the baseline vector
-def base_line_vector(positions_list):
-    antenna1 = np.array(positions_list[1])
-    antenna2 = np.array(positions_list[0])
-    b = antenna1 - antenna2
-    return b
 
 # ŝ Unit Vector Calculation
 # sources is a singular set of ra, dec values like this: (ra, dec)
-def unit_vector_calculation(sources, observation_time, lon, lat):
+def unit_vector_calculation(source, observation_time, loc):
     # Take variables from previous functions
-    ra, dec = sources
-    icrs_coordinate = creating_sky_coordinate(sources)
-    obslocation = create_earth_location(lon, lat)
+    #ra, dec = source
+    icrs_coordinate = creating_sky_coordinate(source)
+    obslocation = create_earth_location(loc[0], loc[1])
+
     # Transform our SkyCoord to AltAz then ENU coordinates
     altaz_coordinate = icrs_coordinate.transform_to(AltAz(obstime=observation_time, location=obslocation))
-    enu_coordinates = altaz_coordinate.cartesian.xyz.value.T
-    return enu_coordinates[0]
 
+    if altaz_coordinate.alt < 0:
+        return "off"
 
+    neu_coordinates = altaz_coordinate.cartesian.xyz.value.T
+
+    return neu_coordinates
