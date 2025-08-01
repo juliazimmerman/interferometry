@@ -27,6 +27,11 @@ shifted_delay_time = np.fft.fftshift(np.fft.fftfreq(100000, d=1e5))
 
 plt.plot(shifted_delay_time, np.abs(shifted_fft_window_freq))
 
+# Plot labels
+plt.xlabel("Geometric Time Delay (s)", fontsize=24)
+plt.ylabel("Relatie Amplitude", fontsize=24)
+plt.title("Geometric Time Delay of 24 Sources", fontsize=46)
+
 to_tick = list(np.linspace(-max_time_delay, max_time_delay, 10))
 to_tick = [np.round(tick, 8) for tick in to_tick]
 print(to_tick)
