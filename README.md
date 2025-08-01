@@ -13,6 +13,7 @@ The layout of the simulation:
 - Install following packages:
 ```
 pip install numpy, astropy, matplotlib
+```
 
 ## Clone the repo
 ```
