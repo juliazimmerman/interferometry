@@ -110,5 +110,5 @@ if __name__ == "__main__":
 
     r = main(amplitude, time, freq_array, ants, sources, ant_loc)
 
-    np.save("data_output.npy", r)
+    np.save("main_data_output.npy", r)
 
