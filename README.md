@@ -25,8 +25,8 @@ pip install numpy, astropy
 ```
 
 
-## Running the simulation
-The simulation currently has a sample set of data to return a visibility. The data is as follows in the details panel:
+## Running run_sim.py for visibility output
+The simulation currently has a the set of data to return a set of frequency visibilities for geometric time delay analysis. The data is as follows in the details panel:
 
 <details>
 <summary>Example Data Set as in Program (Click to Expand)</summary>
@@ -36,11 +36,11 @@ The visibility returned by the program is based on the following example input d
 | **Parameter**        | **Value**                                | **Description**                                 |
 | :------------------- | :--------------------------------------- | :-----------------------------------------------|
 | `amplitude`          | `1`                                      | Unit brightness for all point sources           |
-| `time_info`          | `("2025-01-01 00:00:00,", 5, 10)`        | Start time, duration (in hrs), number of points |                      
-| `freqs`              | `[100e6, 150e6]`                         | Frequency in Hz                                 |
-| `positions_list`     | `[(0, 0, 0), (50, 0, 0)]`                | Antenna cordinates (in meters)                  |
-| `source`             | `[(180, 45), (270, 5)]`                  | Two Sources' right ascension and declination    |
-| `lon`, `lat`         | `(-118, 45)`                             | Longitude & latitude of antenna array           |
+| `time_info`          | `("2023-01-01 00:00:00,", 1, 1)`         | Start time, duration (in hrs), number of points |                      
+| `freqs`              | `np.asarray([i*1e5 for i in range(0,100000)]) | Frequency in Hz                            |
+| `positions_list`     | `[(0, 0, 0), (100, 0, 0)]`               | Antenna cordinates (in meters)                  |
+| `source`             | `np.asarray([[lon, 0] for lon in np.linspace(-180, 165, 24)])`|Sources in ICRS frame       |
+| `lon`, `lat`         | `(-50.6, 5)`                             | Longitude & latitude of antenna array           |
 
 </details>
 
@@ -49,12 +49,12 @@ To run the simulation:
 python3 run_sim.py
 ```
 
-Understanding the output:
+## Running test_freq_axis.py to generate geometric time delay plot
+```
+python3 run_sim.py
+```
 
-This will output a list of your 10 time values evenly spaced across 5 hours starting from midnight of January 1st, 2025, your list of frequencies of 100 MHz and 150 MHz, and your calculated baseline array of the two anntenas. It also prints the dimensions of the output array, which in this case is (1, 2, 10) meaning there is 1 baseline, 2 frequencies, and 10 time values. There is a printed message saying, "Each: Row = Frequency, Column = Time, Block = Baseline" to help understand the formatting of the outputed array. Then, the program outputs your visibilities as an array.
-
-Running the simulation also saves two files to your computer, "sample_visibility_inputs.txt" and "sample_visibility_outputs.txt". Both files are a log of the input and output values you inputed and received, allowing you to refer to them in the future. 
-
+Make sure on line 12 the file name matches the name you saved your visibility data output from run_sim.py on line 113.
 ## Notes
 It's recommended to install astropy in a python virtual environment. Instructions are under "Installation" above.
 
