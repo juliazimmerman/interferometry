@@ -51,7 +51,7 @@ python3 run_sim.py
 
 ## Running test_freq_axis.py to generate geometric time delay plot
 ```
-python3 run_sim.py
+python3 test_freq_axis.py
 ```
 
 Make sure on line 12 the file name matches the name you saved your visibility data output from run_sim.py on line 113.
