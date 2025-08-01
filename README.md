@@ -1,14 +1,26 @@
 # Radio Interferometry Visibility Simulator
 
 ## Description
-Python-based simulator that models radio interferometry. Centered around the Astropy package, it calculates time, location, and sky coordinates to compute the visibility from sources in the sky. The simulator uses many visibilities to calculate the resulting interference pattern.
+Python-based simulator that models radio interferometry. Centered around the Astropy package, it calculates time, location, and sky coordinates to compute the visibility from sources in the sky. The simulator uses many visibilities to calculate the resulting interference pattern, and uses unpolarized point sources at monochromatic frequencies.
+
+The layout of the simulation:
+1. methods.py - contains the functions/methods that are used in the simulation.
+2. run_sim.py - runs the simulation and saves visibility output to a data file.
+3. test_freq_axis.py - takes the data file and creates a matplotlib plot.
+
+## Requirements
+- Python 3.12.3 was used
+- Install following packages:
+```
+pip install numpy, astropy, matplotlib
 
 ## Clone the repo
 ```
 git clone git@github.com:juliazimmerman/interferometry.git
+cd interferometry
 ```
 
-## Installation
+## Creating a virtual environment
 It's recommended to install astropy in a virtual environment. To do so:
 ```
 python3 -m venv myenv
@@ -18,18 +30,18 @@ To activate the virtual environment (may need to include additional subdirectori
 ```
 source myenv/bin/activate
 ```
-Then, install the packages:
 
+## Running the simulation
+
+Methods for the simulation is stored in methods.py. If, you would like to take a look at the methods or change something, access the file as follows. This is not required to run the program.
 ```
-pip install numpy, astropy
+python3 methods.py
 ```
 
-
-## Running run_sim.py for visibility output
-The simulation currently has a the set of data to return a set of frequency visibilities for geometric time delay analysis. The data is as follows in the details panel:
+The simulation currently has a set of data to return a set of frequency visibilities for geometric time delay analysis. The data is as follows in the details panel. If you'd like to create a different plot from the geometric time delay analysis, you must open the run_sim.py file and manaully change the inputs to the paramters outlined in the details panel. 
 
 <details>
-<summary>Example Data Set as in Program (Click to Expand)</summary>
+<summary> Data set for geometric time delay analysis, as in rogram (click to expand)</summary>
 
 The visibility returned by the program is based on the following example input data:
 
@@ -49,6 +61,8 @@ To run the simulation:
 python3 run_sim.py
 ```
 
+This creates a file in your directory called "main_data_output.npy".
+
 ## Running test_freq_axis.py to generate geometric time delay plot
 ```
 python3 test_freq_axis.py
@@ -56,14 +70,6 @@ python3 test_freq_axis.py
 
 Make sure on line 12 the file name matches the name you saved your visibility data output from run_sim.py on line 113.
 ## Notes
-It's recommended to install astropy in a python virtual environment. Instructions are under "Installation" above.
+If you'd like to make any changes to the inputted data, acess run_sim.py's file. There, from line 102 - 109 you can edit the inputs for each variable to configure the simulation to your liking.
 
-If you'd like to change the inputs to the simulation to create a new visibility representative of your own data, navigate to line 124, insert the following. Make sure to change the paramters of the main function as well as the name of the visibility_variable to your liking.
-
-```
-visibility_variable = main(amplitude, time_info, freqs, positions_list, sources, location_info)
-print(visibility_variable)
-```
-
-
-
+run_sim.py MUST be ran first for test_freq_axis.py plot to work. If not, the plot will not generate as the file of output data that the plot is based off will not exist.
