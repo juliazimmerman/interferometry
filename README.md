@@ -4,42 +4,60 @@
 Python-based simulator that models radio interferometry. Centered around the Astropy package, it calculates time, location, and sky coordinates to compute the visibility from sources in the sky. The simulator uses many visibilities to calculate the resulting interference pattern, and uses unpolarized point sources at monochromatic frequencies.
 
 The layout of the simulation:
-1. methods.py - contains the functions/methods that are used in the simulation.
-2. run_sim.py - runs the simulation and saves visibility output to a data file.
-3. test_freq_axis.py - takes the data file and creates a matplotlib plot.
+1. `methods.py` - contains the functions/methods that are used in the simulation.
+2. `run_sim.py` - runs the simulation and saves visibility output to a data file.
+3. `test_freq_axis.py` - takes the data file and creates a matplotlib plot.
 
-## Requirements
-- Python 3.12.3 was used
-- Install following packages:
+To actually obtain the results / use the simulation, you only need to access the `run_sim.py` and `test_freq_axis.py` files. If you'd like to see the behind-the-scenes work to get the simualation running, look at the `methods.py` file's code!
+
+## Setting up a Virtual Environment
+It is recommended to install Astropy in a virtual environment. You can follow the process below to create and activate a Python virtual environment:
+
 ```
-pip install numpy, astropy, matplotlib
+python -m venv RadioInterferometer
+source RadioInterferometer/bin/activate
 ```
 
-## Clone the repo
+## Prerequisites
+You will need the following Python packages to run the simulation and obtain the time frequency analysis results:
+- numpy
+- astropy
+- matplotlib
+- scipy
+Use the process below to install all needed packages.
+
+```
+pip install numpy astropy matplotlib scipy
+```
+
+## Clone the repository
+To get the program installed on your computer, run the following command to clone the repository:
+
 ```
 git clone git@github.com:juliazimmerman/interferometry.git
 cd interferometry
 ```
 
-## Creating a virtual environment
-It's recommended to install astropy in a virtual environment. To do so:
-```
-python3 -m venv myenv
-```
-
-To activate the virtual environment (may need to include additional subdirectories depending on where your virtual environment is saved):
-```
-source myenv/bin/activate
-```
-
 ## Running the simulation
 
-Methods for the simulation is stored in methods.py. If, you would like to take a look at the methods or change something, access the file as follows. This is not required to run the program.
+To run the simulation, first execute the following command to generate the visibility data:
+
 ```
-python3 methods.py
+python3 run_sim.py
 ```
 
-The simulation currently has a set of data to return a set of frequency visibilities for geometric time delay analysis. The data is as follows in the details panel. If you'd like to create a different plot from the geometric time delay analysis, you must open the run_sim.py file and manaully change the inputs to the paramters outlined in the details panel. 
+This will generate a file named `main_data_output.npy`. The data from this file will be used to create your plot.
+
+Next, to generate the geometric time delay plot, use the following command:
+
+```
+python3 test_freq_axis.py
+```
+This will create a plot of the geometric time delay of 24 sources instantiated in the sky. This data was simulated by measuring 100,000 frequencies spaced 100kHz apart with 1 baseline (2 antennas, the distance between them is called a baseline). 
+
+Note: The plot will pop up automatically. 
+
+Currently, the simulation has parameters already put in place. You can view the parameters used for this plot in the details panel below. Click on the small arrow on the left to expand. **Note: It is VERY important you change the value in each line to an *actual number*. Or else, the program will not run.**
 
 <details>
 <summary> Data set for geometric time delay analysis, as in rogram (click to expand)</summary>
@@ -57,20 +75,26 @@ The visibility returned by the program is based on the following example input d
 
 </details>
 
-To run the simulation:
+## Customizing the simulation
+If you'd like to customize the simulation to simulate different conditions such as different frequencies, longitude and latitude positions, etc. here's how you can achieve it. This is **not** a command line friendly program. To change the parameters you must change the parameters directly within the Python file itself.
+
+First, open the run_sim.py file. Do this by activating your favorite text editor and accessing this file. 
+
+Next, find line 102. Here is the man block that contains all the parameters to generate the data. You can change the values of each variable to anything you wish to simulate different conditions. Make sure to change the values only, not the variables themselves. 
+
+Then, use the following commands to run the simulation again to graph your new data:
+
 ```
 python3 run_sim.py
-```
-
-This creates a file in your directory called "main_data_output.npy".
-
-## Running test_freq_axis.py to generate geometric time delay plot
-```
 python3 test_freq_axis.py
 ```
 
-Make sure on line 12 the file name matches the name you saved your visibility data output from run_sim.py on line 113.
-## Notes
-If you'd like to make any changes to the inputted data, acess run_sim.py's file. There, from line 102 - 109 you can edit the inputs for each variable to configure the simulation to your liking.
+## Accessing methods.py
+To see the behind-the-scenes work, run the following command:
 
+```
+python3 methods.py
+```
+
+## Notes
 run_sim.py MUST be ran first for test_freq_axis.py plot to work. If not, the plot will not generate as the file of output data that the plot is based off will not exist.
