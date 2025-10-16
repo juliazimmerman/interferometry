@@ -24,6 +24,7 @@ You will need the following Python packages to run the simulation and obtain the
 - astropy
 - matplotlib
 - scipy
+
 Use the process below to install all needed packages.
 
 ```
@@ -57,7 +58,7 @@ This will create a plot of the geometric time delay of 24 sources instantiated i
 
 Note: The plot will pop up automatically. 
 
-Currently, the simulation has parameters already put in place. You can view the parameters used for this plot in the details panel below. Click on the small arrow on the left to expand. **Note: It is VERY important you change the value in each line to an *actual number*. Or else, the program will not run.**
+Currently, the simulation has parameters already put in place. You can view the parameters used for this plot in the details panel below. Click on the small arrow on the left to expand. 
 
 <details>
 <summary> Data set for geometric time delay analysis, as in rogram (click to expand)</summary>
@@ -76,7 +77,7 @@ The visibility returned by the program is based on the following example input d
 </details>
 
 ## Customizing the simulation
-If you'd like to customize the simulation to simulate different conditions such as different frequencies, longitude and latitude positions, etc. here's how you can achieve it. This is **not** a command line friendly program. To change the parameters you must change the parameters directly within the Python file itself.
+If you'd like to customize the simulation to simulate different conditions such as different frequencies, longitude and latitude positions, etc. here's how you can achieve it. This is **not** a command line friendly program. To change the parameters you must change them directly within the Python file itself.
 
 First, open the run_sim.py file. Do this by activating your favorite text editor and accessing this file. 
 
