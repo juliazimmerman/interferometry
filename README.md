@@ -56,7 +56,7 @@ python3 test_freq_axis.py
 ```
 This will create a plot of the geometric time delay of 24 sources instantiated in the sky. This data was simulated by measuring 100,000 frequencies spaced 100kHz apart with 1 baseline (2 antennas, the distance between them is called a baseline). 
 
-Note: The plot will pop up automatically. 
+Note: The plot will be saved in the directory as `outputs_geometric_delay.pdf`.
 
 Currently, the simulation has parameters already put in place. You can view the parameters used for this plot in the details panel below. Click on the small arrow on the left to expand. 
 
