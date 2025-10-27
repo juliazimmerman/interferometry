@@ -11,6 +11,9 @@ import copy
 fig = plt.figure()
 ax = plt.gca()
 
+plt.figure(figsize=(10, 6))
+plt.rcParams.update({'font.size': 12})
+
 freq_vis = np.load("main_data_output.npy")
 freq_vis = freq_vis[0,:,0]
 
@@ -30,9 +33,9 @@ shifted_delay_time = np.fft.fftshift(np.fft.fftfreq(100000, d=1e5))
 plt.plot(shifted_delay_time, np.abs(shifted_fft_window_freq))
 
 # Plot labels
-plt.xlabel("Geometric Time Delay (s)", fontsize=24)
-plt.ylabel("Relatie Amplitude", fontsize=24)
-plt.title("Geometric Time Delay of 24 Sources", fontsize=46)
+plt.xlabel("Geometric Time Delay (s)", fontsize=14)
+plt.ylabel("Relative Amplitude", fontsize=14)
+plt.title("Geometric Time Delay of 24 Sources", fontsize=24)
 
 to_tick = list(np.linspace(-max_time_delay, max_time_delay, 10))
 to_tick = [np.round(tick, 8) for tick in to_tick]

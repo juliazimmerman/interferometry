@@ -14,7 +14,7 @@ To actually obtain the results / use the simulation, you only need to access the
 It is recommended to install Astropy in a virtual environment. You can follow the process below to create and activate a Python virtual environment:
 
 ```
-python -m venv RadioInterferometer
+python3 -m venv RadioInterferometer
 source RadioInterferometer/bin/activate
 ```
 
