@@ -1,4 +1,6 @@
 # coding: utf-8
+import matplotlib
+matplotlib.use("Agg")
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal.windows import blackmanharris
@@ -9,7 +11,7 @@ import copy
 fig = plt.figure()
 ax = plt.gca()
 
-freq_vis = np.load("data_output.npy")
+freq_vis = np.load("main_data_output.npy")
 freq_vis = freq_vis[0,:,0]
 
 blahar = blackmanharris(100000)
@@ -41,4 +43,6 @@ to_tick_labels[-1] = "horizon"
 plt.xticks(to_tick, to_tick_labels, fontsize=14)
 
 plt.xlim(-max_time_delay, max_time_delay)
-plt.show()
+plt.tight_layout()
+plt.savefig("outputs_geometric_delay.pdf", dpi=300)
+print("Saved figure to outputs_geometric_delay.pdf")
