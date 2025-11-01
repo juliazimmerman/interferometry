@@ -49,7 +49,7 @@ python3 run_sim.py
 
 As mentioned above, this is the actual simulation file. Running this step runs the core simulation, and it generates the visibility data into a file named `main_data_output.npy`. The data from this file will be used to create your plot. This file will be saved in your directory.
 
-Next, we will generate the geometric time delay plot. To do so, you must have the visibility data available on your computer as this program will pull from that file, which is why we run the command above before this one. To actualy generate the geometric time delay plot, use the following command:
+Next, we will generate the geometric time delay plot. To do so, you must have the visibility data available on your computer as this program will pull from that file, which is why we run the command above before this one. To actually generate the geometric time delay plot, use the following command:
 
 ```
 python3 test_freq_axis.py
