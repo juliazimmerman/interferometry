@@ -8,7 +8,7 @@ The layout of the simulation:
 2. `run_sim.py` - runs the simulation and saves visibility output to a data file.
 3. `test_freq_axis.py` - takes the data file and creates a matplotlib plot.
 
-To actually obtain the results / use the simulation, you only need to access the `run_sim.py` and `test_freq_axis.py` files. If you'd like to see the behind-the-scenes work to get the simulation running, look at the `methods.py` file's code!
+To actually obtain the results / use the simulation, you only need to access the `run_sim.py` and `test_freq_axis.py` files. If you'd like to see the behind-the-scenes work to get the simulation running, look at the `methods.py` file's code! This file holds all the functions that lets `run_sim.py` work. Guidance on how to run/configure `methods.py` will be at the bottom of this README.
 
 ## Setting up a Virtual Environment
 It is recommended to install Astropy in a virtual environment. You can follow the process below to create and activate a Python virtual environment:
